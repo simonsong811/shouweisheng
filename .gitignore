@@ -1,0 +1,29 @@
+# Local dependencies and build output
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.next/
+**/.next/
+.wrangler/
+**/.wrangler/
+
+# Generated or private working files
+outputs/
+tmp/
+.superpowers/
+tmp_template_inventory.json
+*.inspect.ndjson
+*.log
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Rendered media
+video/out/
+
+# Operating system
+.DS_Store
+Thumbs.db

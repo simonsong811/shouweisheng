@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="基于 Wi-Fi CSI 与多源事件融合的非视觉化手卫生行为感知与提醒系统"
+    />
+    <title>手护智感 AI 智能体</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <header class="brand">
+          <div class="brand-mark" aria-hidden="true">HH</div>
+          <div>
+            <p class="brand-kicker">手护智感</p>
+            <h1>手卫生 AI 智能体</h1>
+          </div>
+        </header>
+
+        <div class="system-state">
+          <span class="status-dot" aria-hidden="true"></span>
+          <div>
+            <span class="meta-label">系统状态</span>
+            <strong id="systemStatus">等待设备接入</strong>
+          </div>
+        </div>
+
+        <section class="config-panel" aria-labelledby="configTitle">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">接入配置</p>
+              <h2 id="configTitle">边缘网关</h2>
+            </div>
+          </div>
+
+          <label class="field">
+            <span>网关地址</span>
+            <input
+              id="gatewayBaseUrl"
+              type="url"
+              inputmode="url"
+              placeholder="http://127.0.0.1:8787"
+              autocomplete="off"
+            />
+          </label>
+
+          <label class="field">
+            <span>点位编号</span>
+            <input
+              id="siteId"
+              type="text"
+              placeholder="treatment-room-01"
+              autocomplete="off"
+            />
+          </label>
+
+          <div class="config-actions">
+            <button id="saveConfig" class="primary-button" type="button">保存配置</button>
+            <button id="testConnection" class="secondary-button" type="button">测试连接</button>
+          </div>
+          <p id="connectionMessage" class="connection-message" aria-live="polite">
+            配置仅保存在当前浏览器。
+          </p>
+        </section>
+
+        <section class="boundary-note" aria-label="临床边界">
+          <strong>临床边界</strong>
+          <p>系统用于重点空间行为初筛和提醒，不作为个人手卫生依从性的最终质控依据。</p>
+        </section>
+
+        <footer class="sidebar-footer">
+          <span>非视觉化</span>
+          <span>去标识化</span>
+          <span>可复核</span>
+        </footer>
+      </aside>
+
+      <main class="workspace">
+        <header class="workspace-header">
+          <div>
+            <p class="eyebrow">治疗室入口 · 真实设备数据</p>
+            <h2>手卫生行为感知看板</h2>
+            <p class="header-copy">融合 CSI、按压/水流与区域停留证据，输出可解释的疑似事件。</p>
+          </div>
+          <div class="header-actions">
+            <div class="sync-meta">
+              <span>最后同步</span>
+              <strong id="lastSync">尚未同步</strong>
+            </div>
+            <button id="generateDemoEvent" class="demo-button" type="button">
+              生成演示事件
+            </button>
+            <button id="refreshStatus" class="refresh-button" type="button">刷新状态</button>
+          </div>
+        </header>
+
+        <section class="stats-band" aria-label="今日统计">
+          <article class="stat-block valid">
+            <span class="stat-label">疑似有效</span>
+            <strong id="validCount">0</strong>
+            <span class="stat-foot">空间级事件</span>
+          </article>
+          <article class="stat-block short">
+            <span class="stat-label">时长不足</span>
+            <strong id="shortDurationCount">0</strong>
+            <span id="shortDurationUnit" class="stat-foot">事件数</span>
+          </article>
+          <article class="stat-block review">
+            <span class="stat-label">待复核</span>
+            <strong id="reviewCount">0</strong>
+            <span class="stat-foot">不确定事件</span>
+          </article>
+          <div class="stats-context">
+            <span>统计口径</span>
+            <strong id="statsScope">未关联身份，仅统计事件</strong>
+            <p>获得伦理审批和授权身份关联后，才显示去标识化时长不足人次。</p>
+          </div>
+        </section>
+
+        <section class="dashboard-grid">
+          <section class="panel devices-panel" aria-labelledby="devicesTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">设备健康</p>
+                <h2 id="devicesTitle">采集链路</h2>
+              </div>
+              <span id="deviceSummary" class="section-status">0 / 4 在线</span>
+            </div>
+            <div id="deviceGrid" class="device-grid"></div>
+          </section>
+
+          <section class="panel decision-panel" aria-labelledby="decisionTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">事件融合</p>
+                <h2 id="decisionTitle">当前判读</h2>
+              </div>
+              <span id="decisionSource" class="section-status">等待真实设备事件</span>
+            </div>
+
+            <div id="emptyDecision" class="empty-state">
+              <div class="signal-placeholder" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <strong>尚未接入真实事件</strong>
+              <p>连接 Wi-Fi CSI 采集端、手消按压传感器和边缘网关后，这里会显示最新证据链。</p>
+            </div>
+
+            <article id="decisionCard" class="decision-card" hidden>
+              <div class="decision-head">
+                <div>
+                  <span id="decisionBadge" class="decision-badge">待复核</span>
+                  <h3 id="latestEventTitle">暂无事件</h3>
+                </div>
+                <span id="latestEventId" class="event-id"></span>
+              </div>
+              <p id="latestEventSummary" class="decision-summary"></p>
+              <dl id="evidenceList" class="evidence-list"></dl>
+            </article>
+          </section>
+
+          <section class="panel workflow-panel" aria-labelledby="workflowTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">智能体闭环</p>
+                <h2 id="workflowTitle">采集与判读流程</h2>
+              </div>
+            </div>
+            <ol class="workflow-list">
+              <li>
+                <span>01</span>
+                <div><strong>感知</strong><p>接收 CSI、按压/水流、停留与设备质量。</p></div>
+              </li>
+              <li>
+                <span>02</span>
+                <div><strong>推理</strong><p>输出动作类别、持续时间、置信度和证据完整性。</p></div>
+              </li>
+              <li>
+                <span>03</span>
+                <div><strong>行动</strong><p>时长不足即时提醒，不确定事件转人工复核。</p></div>
+              </li>
+              <li>
+                <span>04</span>
+                <div><strong>学习</strong><p>利用复核结果校准阈值并形成岗位改进建议。</p></div>
+              </li>
+            </ol>
+          </section>
+
+          <section class="panel review-panel" aria-labelledby="reviewTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">人工在环</p>
+                <h2 id="reviewTitle">复核队列</h2>
+              </div>
+              <span id="reviewQueueCount" class="section-status">0 条</span>
+            </div>
+            <div id="reviewQueue" class="review-list">
+              <div class="quiet-state">暂无待复核事件。多人干扰、证据冲突或低置信度事件会进入这里。</div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="./web-app.js"></script>
+  </body>
+</html>

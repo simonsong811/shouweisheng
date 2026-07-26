@@ -1,0 +1,15 @@
+{
+  "description": "基于 WiFi CSI 的非视觉化手卫生行为感知与智能提醒系统",
+  "appid": "touristappid",
+  "projectname": "hand-hygiene-wifi-csi",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "libVersion": "latest"
+}

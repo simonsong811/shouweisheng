@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "手卫生感知",
+    "navigationBarBackgroundColor": "#007f78",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#eef3f1"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

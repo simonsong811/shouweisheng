@@ -1,0 +1,161 @@
+<view class="page-shell">
+  <view class="top-panel">
+    <view class="brand-row">
+      <view class="brand-mark">
+        <text>HH</text>
+      </view>
+      <view class="brand-copy">
+        <text class="kicker">手护智感</text>
+        <text class="title">非视觉化手卫生 AI 智能体</text>
+      </view>
+      <view class="system-pill {{systemStatusClass}}">{{systemStatusText}}</view>
+    </view>
+
+    <view class="summary-strip">
+      <view class="summary-item">
+        <text class="summary-label">重点空间</text>
+        <text class="summary-value">{{spaceName}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-label">数据源</text>
+        <text class="summary-value">{{dataSourceLabel}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-label">最后同步</text>
+        <text class="summary-value">{{lastSyncText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">
+      <text>设备接入</text>
+      <button class="icon-button" bindtap="refreshStatus" loading="{{loadingStatus}}">刷新</button>
+    </view>
+    <view class="device-grid">
+      <view wx:for="{{devices}}" wx:key="key" class="device-card {{item.state}}">
+        <view class="device-icon {{item.key}}"></view>
+        <view class="device-copy">
+          <text class="device-name">{{item.name}}</text>
+          <text class="device-desc">{{item.desc}}</text>
+        </view>
+        <text class="device-state">{{item.stateText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">
+      <text>数据接入配置</text>
+      <text class="section-note">连接真实网关后启用</text>
+    </view>
+    <view class="config-card">
+      <view class="input-row">
+        <text class="input-label">网关地址</text>
+        <input
+          class="config-input"
+          placeholder="例如 https://example.com"
+          value="{{apiBaseUrl}}"
+          bindinput="onApiInput"
+        />
+      </view>
+      <view class="input-row">
+        <text class="input-label">点位编号</text>
+        <input
+          class="config-input"
+          placeholder="例如 treatment-room-01"
+          value="{{siteId}}"
+          bindinput="onSiteInput"
+        />
+      </view>
+      <view class="config-actions">
+        <button class="primary-button" bindtap="saveConfig">保存配置</button>
+        <button class="secondary-button" bindtap="testConnection" loading="{{testingConnection}}">测试连接</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">
+      <text>今日概览</text>
+      <text class="section-note">来自网关统计</text>
+    </view>
+    <view class="stats-grid">
+      <view class="stat-card">
+        <text class="stat-label">疑似有效</text>
+        <text class="stat-value">{{stats.validCount}}</text>
+      </view>
+      <view class="stat-card attention">
+        <text class="stat-label">时长不足</text>
+        <text class="stat-value">{{stats.shortDurationCount}}</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-label">待复核</text>
+        <text class="stat-value">{{stats.reviewCount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">
+      <text>当前判读</text>
+      <text class="section-note">{{decisionSourceText}}</text>
+    </view>
+
+    <view wx:if="{{latestEvent}}" class="decision-card {{latestEvent.level}}">
+      <view class="decision-head">
+        <text class="decision-title">{{latestEvent.title}}</text>
+        <text class="decision-badge">{{latestEvent.label}}</text>
+      </view>
+      <text class="decision-body">{{latestEvent.summary}}</text>
+      <view class="evidence-list">
+        <view wx:for="{{latestEvent.evidence}}" wx:key="name" class="evidence-row">
+          <text>{{item.name}}</text>
+          <text>{{item.value}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty-card">
+      <view class="empty-visual">
+        <view class="pulse-line line-a"></view>
+        <view class="pulse-line line-b"></view>
+        <view class="pulse-line line-c"></view>
+      </view>
+      <text class="empty-title">尚未接入真实事件</text>
+      <text class="empty-body">保存网关地址并连接 WiFi CSI 采集端、手消按压传感器后，这里会显示最新判读结果。</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">
+      <text>采集流程</text>
+      <text class="section-note">用于真实训练数据</text>
+    </view>
+    <view class="workflow">
+      <view wx:for="{{workflow}}" wx:key="title" class="workflow-step">
+        <text class="step-index">{{index + 1}}</text>
+        <view>
+          <text class="step-title">{{item.title}}</text>
+          <text class="step-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">
+      <text>复核队列</text>
+      <text class="section-note">{{reviewItems.length}} 条</text>
+    </view>
+    <view wx:if="{{reviewItems.length}}" class="review-list">
+      <view wx:for="{{reviewItems}}" wx:key="id" class="review-card">
+        <text class="review-title">{{item.reason}}</text>
+        <text class="review-meta">{{item.time}} · {{item.site}}</text>
+      </view>
+    </view>
+    <view wx:else class="quiet-card">
+      <text>暂无待复核事件。真实后台返回“不确定”事件后会进入这里。</text>
+    </view>
+  </view>
+</view>
