@@ -40,3 +40,11 @@
   - Moved threshold and final AI disclosures inside the 56px bottom safe area.
 - Rendered and inspected frames 240, 690, 1320, 2130, 3060, 3930, 4500, and 5220 in `out/visual-checks/`.
 - Verification: `pnpm lint`, `pnpm test`, and `pnpm exec remotion compositions` passed; composition is 1280×720, 30fps, 5400 frames (180 seconds).
+
+### Tasks 4–5 review follow-up
+
+- Raised the ReviewEventScene primary title from 42px to 46px, above the binding 44px minimum.
+- Added regression coverage for the review title minimum, the 30-frame scene premount, the 480/4440 prototype-disclosure window, and the 5250/150 AI-disclosure window.
+- RED: focused visual tests failed because the new binding constants did not yet exist.
+- GREEN: focused tests passed (2 files, 7 tests); `pnpm lint` passed.
+- Rerendered and visually inspected only `out/visual-checks/frame-3930.png`; the 46px title remains inside the safe area with no overlap.

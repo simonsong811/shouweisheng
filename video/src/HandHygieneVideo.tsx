@@ -19,6 +19,16 @@ export type HandHygieneVideoProps = {
   showAiDisclosure: boolean;
 };
 
+export const SCENE_PREMOUNT_FRAMES = 30;
+export const PROTOTYPE_DISCLOSURE_WINDOW = {
+  from: 480,
+  durationInFrames: 4440,
+} as const;
+export const AI_DISCLOSURE_WINDOW = {
+  from: 5250,
+  durationInFrames: 150,
+} as const;
+
 const SCENE_COMPONENTS: Record<SceneId, React.FC> = {
   "agent-loop": AgentLoopScene,
   "closing": ClosingScene,
@@ -44,7 +54,7 @@ export const HandHygieneVideo: React.FC<HandHygieneVideoProps> = ({
             durationInFrames={scene.durationInFrames}
             from={scene.from}
             key={scene.id}
-            premountFor={30}
+            premountFor={SCENE_PREMOUNT_FRAMES}
           >
             <Scene />
           </Sequence>
@@ -54,13 +64,21 @@ export const HandHygieneVideo: React.FC<HandHygieneVideoProps> = ({
       <CaptionTrack />
 
       {showPrototypeDisclosure ? (
-        <Sequence from={480} durationInFrames={4440} layout="none">
+        <Sequence
+          from={PROTOTYPE_DISCLOSURE_WINDOW.from}
+          durationInFrames={PROTOTYPE_DISCLOSURE_WINDOW.durationInFrames}
+          layout="none"
+        >
           <Disclosure>{DISCLOSURES[0]}</Disclosure>
         </Sequence>
       ) : null}
 
       {showAiDisclosure ? (
-        <Sequence from={5250} durationInFrames={150} layout="none">
+        <Sequence
+          from={AI_DISCLOSURE_WINDOW.from}
+          durationInFrames={AI_DISCLOSURE_WINDOW.durationInFrames}
+          layout="none"
+        >
           <Disclosure bottom={56} maxWidth={610}>
             {DISCLOSURES[3]}
           </Disclosure>

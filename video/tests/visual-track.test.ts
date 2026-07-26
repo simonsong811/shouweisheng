@@ -2,6 +2,11 @@ import {describe, expect, it} from "vitest";
 import {CaptionTrack} from "../src/components/CaptionTrack";
 import {getWorkflowNodeRevealRange} from "../src/components/WorkflowLoop";
 import {
+  AI_DISCLOSURE_WINDOW,
+  PROTOTYPE_DISCLOSURE_WINDOW,
+  SCENE_PREMOUNT_FRAMES,
+} from "../src/HandHygieneVideo";
+import {
   AgentLoopScene,
   ClosingScene,
   HookScene,
@@ -9,6 +14,7 @@ import {
   MissedEventScene,
   PositioningScene,
   ReviewEventScene,
+  REVIEW_EVENT_TITLE_SIZE,
   ValidEventScene,
 } from "../src/scenes/Scenes";
 import {COLORS, SAFE_AREA, TYPOGRAPHY} from "../src/theme";
@@ -72,5 +78,21 @@ describe("silent visual track contract", () => {
       expect(end).toBeGreaterThan(start);
       expect(end).toBe(index * 120);
     }
+  });
+
+  it("keeps the review-event primary title above the binding minimum", () => {
+    expect(REVIEW_EVENT_TITLE_SIZE).toBeGreaterThanOrEqual(44);
+  });
+
+  it("keeps the binding disclosure windows and scene premount", () => {
+    expect(SCENE_PREMOUNT_FRAMES).toBe(30);
+    expect(PROTOTYPE_DISCLOSURE_WINDOW).toEqual({
+      from: 480,
+      durationInFrames: 4440,
+    });
+    expect(AI_DISCLOSURE_WINDOW).toEqual({
+      from: 5250,
+      durationInFrames: 150,
+    });
   });
 });

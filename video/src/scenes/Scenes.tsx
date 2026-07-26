@@ -474,6 +474,8 @@ const ReviewPrototype: React.FC = () => {
   );
 };
 
+export const REVIEW_EVENT_TITLE_SIZE = 46;
+
 export const ReviewEventScene: React.FC = () => {
   const frame = useCurrentFrame();
   const copyReveal = interpolate(frame, [250, 310], [0, 1], {
@@ -505,7 +507,7 @@ export const ReviewEventScene: React.FC = () => {
             eyebrow="待复核事件"
             maxWidth={380}
             title="AI 识别不确定性，而不是过度判断"
-            titleSize={42}
+            titleSize={REVIEW_EVENT_TITLE_SIZE}
           />
           <div style={{display: "flex", flexWrap: "wrap", gap: 12}}>
             <Tag tone="amber">数据缺失</Tag>
