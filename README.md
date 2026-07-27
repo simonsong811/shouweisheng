@@ -2,6 +2,12 @@
 
 这是一个面向比赛申报和后续硬件接入的手卫生 AI 智能体项目，用于展示“WiFi CSI + 低成本事件传感器融合”的手卫生行为初筛与提醒流程。
 
+## 评审与下载
+
+- [在线评审版](https://shouweisheng-ai.hoaquachpw293.chatgpt.site)
+- [最终源码版本 v1.0.0](https://github.com/simonsong811/shouweisheng/tree/v1.0.0)
+- [最终版 ZIP 下载](https://github.com/simonsong811/shouweisheng/archive/refs/tags/v1.0.0.zip)
+
 ## 打开方式
 
 网页版：直接用浏览器打开 `index.html` 即可运行。
