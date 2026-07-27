@@ -4,7 +4,7 @@
 
 ## 评审与下载
 
-- [在线评审版](https://shouweisheng-ai.hoaquachpw293.chatgpt.site)
+- [在线评审版（GitHub Pages）](https://simonsong811.github.io/shouweisheng/)
 - [最终源码版本 v1.0.0](https://github.com/simonsong811/shouweisheng/tree/v1.0.0)
 - [最终版 ZIP 下载](https://github.com/simonsong811/shouweisheng/archive/refs/tags/v1.0.0.zip)
 
